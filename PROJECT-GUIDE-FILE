@@ -4,61 +4,16 @@ REQUIREMENTS:
 
 
 STEPS:
-STEP1:
-#step up web
+cd EC2-3TIER-PROJECT/frontend
+apt npm install
+npm run build     # This command creates a build/ directory with the static files for production.
 
-1.launch web server in public subnet
+Install and Configure Nginx:
 
-update the packages
+sudo apt update
+sudo apt install nginx
 
-install web server
-
-2.clone code 
-git clone 
-
-goto project repository
-
-cd
-
-copy the code to the target
-cp -r /present path/* /usr/share/nginx/html
-
-Update Nginx Configuration
-sudo vi /etc/nginx/sites-available/default
-
-server {
-    listen 80;
-    server_name your-domain-or-ip;
-
-    root /usr/share/nginx/html;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-}
-
-Restart Nginx
+sudo cp nginx/nginx.conf /etc/nginx/nginx.conf
+sudo cp -r frontend/build/* /usr/share/nginx/html/
 sudo systemctl restart nginx
 
-check ports are enable or not
-port 80
-_______________________________________________________________________________________________________________________________________________________________________
-
-#setup backend:
-
-# Update package list
-sudo apt update
-
-# Install pkg-config
-sudo apt install pkg-config
-
-# Ensure necessary development libraries are installed
-sudo apt install libmysqlclient-dev python3-dev
-
-# Reinstall mysqlclient in the virtual environment
-source venv/bin/activate
-pip install mysqlclient
-
-# Run Flask Application:
-python app.py

@@ -3,17 +3,85 @@ REQUIREMENTS:
 
 
 
-STEPS:
-cd EC2-3TIER-PROJECT/frontend
-apt npm install
-npm run build     # This command creates a build/ directory with the static files for production.
-
-Install and Configure Nginx:
-
+1. Build Your React Application
+bash
+Copy code
+cd /root/EC2-3TIER-PROJECT/FRONTEND-REACT
+npm install
+npm run build   # This command creates a build/ directory with the static files for production.
+2. Install and Configure Nginx
+bash
+Copy code
 sudo apt update
 sudo apt install nginx
+3. Move React Build Directory
+Create a new directory for the React build files:
 
-sudo cp nginx/nginx.conf /etc/nginx/nginx.conf
-sudo cp -r frontend/build/* /usr/share/nginx/html/
+bash
+Copy code
+sudo mkdir -p /var/www/react-app
+Copy the React build files to the new directory:
+
+bash
+Copy code
+sudo cp -r /root/EC2-3TIER-PROJECT/FRONTEND-REACT/build/* /var/www/react-app/
+Change ownership of the directory to www-data (the default user for Nginx):
+
+bash
+Copy code
+sudo chown -R www-data:www-data /var/www/react-app
+Set appropriate permissions:
+
+bash
+Copy code
+sudo chmod -R 755 /var/www/react-app
+4. Configure Nginx
+Create and edit the Nginx configuration file:
+
+bash
+Copy code
+sudo vi /etc/nginx/sites-available/react-app
+Add the following configuration:
+
+nginx
+Copy code
+server {
+    listen 80;
+    server_name 18.207.222.86;  # Replace with your server's IP or domain
+
+    root /var/www/react-app;
+    index index.html;
+
+    location / {
+        try_files $uri /index.html;
+    }
+}
+Create a symbolic link to enable the configuration:
+
+bash
+Copy code
+sudo ln -s /etc/nginx/sites-available/react-app /etc/nginx/sites-enabled/
+Remove the old symbolic link if it exists:
+
+bash
+Copy code
+sudo rm /etc/nginx/sites-enabled/default
+5. Test and Restart Nginx
+Test the Nginx configuration:
+
+bash
+Copy code
+sudo nginx -t
+Ensure there are no errors. If errors are reported, review and correct them.
+
+Restart Nginx to apply the changes:
+
+bash
+Copy code
 sudo systemctl restart nginx
+6. Verify Nginx Status
+Check the status of Nginx:
 
+bash
+Copy code
+sudo systemctl status nginx

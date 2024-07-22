@@ -1,50 +1,47 @@
 REQUIREMENTS:
+1.servers1(for frontend)-- t3.medium
+2.
 
 
 
+sudo apt update
 
-1. Build Your React Application
-bash
-Copy code
+step1: clone and build react app:
+1. Build Your React Application:
+#clone repo
+git clone https://github.com/kiritisagar/EC2-3TIER-PROJECT.git
+
+#goto project repo:
 cd /root/EC2-3TIER-PROJECT/FRONTEND-REACT
-npm install
+
+#install and build react code:
+apt npm install
+npm install     #install the dependencies listed in your package.json file
 npm run build   # This command creates a build/ directory with the static files for production.
+
 2. Install and Configure Nginx
-bash
-Copy code
 sudo apt update
 sudo apt install nginx
+
 3. Move React Build Directory
-Create a new directory for the React build files:
-
-bash
-Copy code
+# Create a new directory for the React build files:
 sudo mkdir -p /var/www/react-app
+
 Copy the React build files to the new directory:
-
-bash
-Copy code
 sudo cp -r /root/EC2-3TIER-PROJECT/FRONTEND-REACT/build/* /var/www/react-app/
+
 Change ownership of the directory to www-data (the default user for Nginx):
-
-bash
-Copy code
 sudo chown -R www-data:www-data /var/www/react-app
+
 Set appropriate permissions:
-
-bash
-Copy code
 sudo chmod -R 755 /var/www/react-app
+
 4. Configure Nginx
-Create and edit the Nginx configuration file:
-
-bash
-Copy code
+# Create and edit the Nginx configuration file:
 sudo vi /etc/nginx/sites-available/react-app
-Add the following configuration:
 
-nginx
-Copy code
+# Add the following configuration:
+
 server {
     listen 80;
     server_name 18.207.222.86;  # Replace with your server's IP or domain
@@ -56,32 +53,47 @@ server {
         try_files $uri /index.html;
     }
 }
-Create a symbolic link to enable the configuration:
 
-bash
-Copy code
+# Create a symbolic link to enable the configuration:
 sudo ln -s /etc/nginx/sites-available/react-app /etc/nginx/sites-enabled/
-Remove the old symbolic link if it exists:
 
-bash
-Copy code
+# Remove the old symbolic link if it exists:
 sudo rm /etc/nginx/sites-enabled/default
+
 5. Test and Restart Nginx
-Test the Nginx configuration:
-
-bash
-Copy code
+# Test the Nginx configuration:
 sudo nginx -t
-Ensure there are no errors. If errors are reported, review and correct them.
 
-Restart Nginx to apply the changes:
-
-bash
-Copy code
+# Restart Nginx to apply the changes:
 sudo systemctl restart nginx
-6. Verify Nginx Status
-Check the status of Nginx:
 
-bash
-Copy code
+6. Verify Nginx Status
+# Check the status of Nginx:
 sudo systemctl status nginx
+
+____________________________________________________________________________________________________________________________
+
+# Update and Install Dependencies:
+sudo apt update
+sudo apt upgrade -y
+sudo apt install python3-pip python3-venv nginx -y
+
+# Clone Your Git Repository:
+git clone https://github.com/kiritisagar/EC2-3TIER-PROJECT.git
+cd EC2-3TIER-PROJECT
+cd backend
+
+# Create a Python Virtual Environment:
+python3 -m venv venv
+source venv/bin/activate
+
+apt install python3-flask
+
+# Install Python Dependencies:
+pip install -r requirements.txt
+
+
+# Run the Python Application:
+
+
+
